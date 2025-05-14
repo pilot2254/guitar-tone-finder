@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Tone Finder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vercel: {
+                            black: '#000',
+                            white: '#fff',
+                            gray: '#888',
+                            lightgray: '#eaeaea'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-white text-vercel-black min-h-screen flex flex-col items-center font-sans">
+    <header class="w-full max-w-4xl px-6 py-8">
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Guitar Tone Finder</h1>
+            <div class="flex items-center">
+                <span class="mr-2 text-sm">Notation:</span>
+                <div class="relative inline-block w-12 mr-2 align-middle select-none">
+                    <input type="checkbox" id="notation-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-vercel-lightgray appearance-none cursor-pointer transition-transform duration-200 ease-in" />
+                    <label for="notation-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-vercel-lightgray cursor-pointer"></label>
+                </div>
+                <span id="notation-label" class="text-sm">European</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-4xl px-6 py-8 flex flex-col items-center justify-center">
+        <div class="bg-vercel-lightgray p-8 rounded-lg shadow-sm w-full max-w-lg text-center mb-12">
+            <p class="text-lg mb-4">Find all occurrences of this tone on the fretboard:</p>
+            <div id="tone-display" class="text-6xl font-bold mb-6">-</div>
+            <button id="new-tone-btn" class="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors">
+                New Tone
+            </button>
+        </div>
+
+        <div class="w-full max-w-lg">
+            <h2 class="text-xl font-semibold mb-4">Instructions</h2>
+            <ol class="list-decimal pl-5 space-y-2">
+                <li>Click "New Tone" to get a random tone</li>
+                <li>Find all occurrences of this tone on your guitar fretboard</li>
+                <li>Toggle between European and American notation if needed</li>
+                <li>Practice regularly to improve your fretboard knowledge</li>
+            </ol>
+        </div>
+    </main>
+
+    <footer class="w-full max-w-4xl px-6 py-8 border-t border-vercel-lightgray text-center text-sm text-vercel-gray">
+        <p>Created for guitar students to improve fretboard knowledge</p>
+    </footer>
+
+    <style>
+        .toggle-checkbox:checked {
+            transform: translateX(100%);
+            border-color: #000;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #000;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toneDisplay = document.getElementById('tone-display');
+            const newToneBtn = document.getElementById('new-tone-btn');
+            const notationToggle = document.getElementById('notation-toggle');
+            const notationLabel = document.getElementById('notation-label');
+            
+            // European notation (with H)
+            const europeanTones = ['E', 'F', 'F#', 'G', 'G#', 'A', 'B', 'H', 'C', 'C#', 'D', 'D#'];
+            
+            // American notation (with B)
+            const americanTones = ['E', 'F', 'F#', 'G', 'G#', 'A', 'H', 'B', 'C', 'C#', 'D', 'D#'];
+            
+            let isEuropean = true;
+            let currentTones = europeanTones;
+            
+            // Function to get a random tone
+            function getRandomTone() {
+                const randomIndex = Math.floor(Math.random() * currentTones.length);
+                return currentTones[randomIndex];
+            }
+            
+            // Update the displayed tone
+            function updateTone() {
+                toneDisplay.textContent = getRandomTone();
+            }
+            
+            // Toggle between European and American notation
+            function toggleNotation() {
+                isEuropean = !isEuropean;
+                notationLabel.textContent = isEuropean ? 'European' : 'American';
+                currentTones = isEuropean ? europeanTones : americanTones;
+                
+                // If the current tone is B/H, update it to match the current notation
+                if (toneDisplay.textContent === 'B' || toneDisplay.textContent === 'H') {
+                    toneDisplay.textContent = isEuropean ? 'H' : 'B';
+                }
+            }
+            
+            // Event listeners
+            newToneBtn.addEventListener('click', updateTone);
+            notationToggle.addEventListener('change', toggleNotation);
+            
+            // Initialize with a random tone
+            updateTone();
+        });
+    </script>
+</body>
+</html>
