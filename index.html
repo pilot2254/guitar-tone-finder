@@ -30,7 +30,7 @@
 </head>
 <body class="bg-white text-vercel-black min-h-screen flex flex-col items-center font-sans">
     <header class="w-full max-w-4xl px-6 py-8">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
             <h1 class="text-2xl font-bold">Guitar Tone Finder</h1>
             <div class="flex items-center">
                 <span class="mr-2 text-sm">Notation:</span>
@@ -43,10 +43,97 @@
         </div>
     </header>
 
-    <main class="flex-grow w-full max-w-4xl px-6 py-8 flex flex-col items-center justify-center">
-        <div class="bg-vercel-lightgray p-8 rounded-lg shadow-sm w-full max-w-lg text-center mb-12">
+    <main class="flex-grow w-full max-w-4xl px-6 py-4 flex flex-col items-center justify-center">
+        <!-- Settings Panel -->
+        <div class="w-full max-w-lg mb-8 bg-vercel-lightgray/30 p-6 rounded-lg">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold">Settings</h2>
+                <button id="toggle-settings" class="text-sm text-vercel-gray hover:text-vercel-black">
+                    Hide
+                </button>
+            </div>
+            <div id="settings-content">
+                <div class="flex flex-col space-y-4">
+                    <!-- Mode Toggle -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Mode:</span>
+                        <div class="flex items-center">
+                            <span id="mode-label" class="mr-2 text-sm">Manual</span>
+                            <div class="relative inline-block w-12 mr-2 align-middle select-none">
+                                <input type="checkbox" id="mode-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-vercel-lightgray appearance-none cursor-pointer transition-transform duration-200 ease-in" />
+                                <label for="mode-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-vercel-lightgray cursor-pointer"></label>
+                            </div>
+                            <span class="text-sm">Auto</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Auto Interval (only visible in auto mode) -->
+                    <div id="auto-interval-container" class="hidden">
+                        <label for="auto-interval" class="text-sm block mb-1">Interval (seconds):</label>
+                        <input type="range" id="auto-interval" min="3" max="15" value="5" class="w-full">
+                        <div class="flex justify-between text-xs text-vercel-gray">
+                            <span>3s</span>
+                            <span id="interval-value">5s</span>
+                            <span>15s</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Practice Session Toggle -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Practice Session:</span>
+                        <div class="flex items-center">
+                            <span id="session-label" class="mr-2 text-sm">Off</span>
+                            <div class="relative inline-block w-12 mr-2 align-middle select-none">
+                                <input type="checkbox" id="session-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-vercel-lightgray appearance-none cursor-pointer transition-transform duration-200 ease-in" />
+                                <label for="session-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-vercel-lightgray cursor-pointer"></label>
+                            </div>
+                            <span class="text-sm">On</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Allow Repeats Toggle -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Allow Repeated Tones:</span>
+                        <div class="flex items-center">
+                            <span id="repeats-label" class="mr-2 text-sm">No</span>
+                            <div class="relative inline-block w-12 mr-2 align-middle select-none">
+                                <input type="checkbox" id="repeats-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-vercel-lightgray appearance-none cursor-pointer transition-transform duration-200 ease-in" />
+                                <label for="repeats-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-vercel-lightgray cursor-pointer"></label>
+                            </div>
+                            <span class="text-sm">Yes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tone Display -->
+        <div class="bg-vercel-lightgray p-8 rounded-lg shadow-sm w-full max-w-lg text-center mb-8">
             <p class="text-lg mb-4">Find all occurrences of this tone on the fretboard:</p>
-            <div id="tone-display" class="text-6xl font-bold mb-6">-</div>
+            <div id="tone-display" class="text-6xl font-bold mb-4">-</div>
+            
+            <!-- Session Progress (only visible when session is active) -->
+            <div id="session-progress" class="mb-6 hidden">
+                <div class="flex justify-between text-sm text-vercel-gray mb-1">
+                    <span>Progress:</span>
+                    <span id="progress-text">0/12</span>
+                </div>
+                <div class="w-full bg-white rounded-full h-2">
+                    <div id="progress-bar" class="bg-black h-2 rounded-full" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <!-- Timer (only visible in auto mode) -->
+            <div id="timer-container" class="mb-6 hidden">
+                <div class="flex justify-between text-sm text-vercel-gray mb-1">
+                    <span>Next tone in:</span>
+                    <span id="timer-text">5s</span>
+                </div>
+                <div class="w-full bg-white rounded-full h-2">
+                    <div id="timer-bar" class="bg-black h-2 rounded-full" style="width: 100%"></div>
+                </div>
+            </div>
+            
             <button id="new-tone-btn" class="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors">
                 New Tone
             </button>
@@ -55,9 +142,10 @@
         <div class="w-full max-w-lg">
             <h2 class="text-xl font-semibold mb-4">Instructions</h2>
             <ol class="list-decimal pl-5 space-y-2">
-                <li>Click "New Tone" to get a random tone</li>
+                <li>Click "New Tone" to get a random tone (or use Auto mode)</li>
                 <li>Find all occurrences of this tone on your guitar fretboard</li>
                 <li>Toggle between European and American notation if needed</li>
+                <li>Use Practice Session to work through all 12 tones systematically</li>
                 <li>Practice regularly to improve your fretboard knowledge</li>
             </ol>
         </div>
@@ -79,29 +167,98 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
             const toneDisplay = document.getElementById('tone-display');
             const newToneBtn = document.getElementById('new-tone-btn');
             const notationToggle = document.getElementById('notation-toggle');
             const notationLabel = document.getElementById('notation-label');
+            const modeToggle = document.getElementById('mode-toggle');
+            const modeLabel = document.getElementById('mode-label');
+            const sessionToggle = document.getElementById('session-toggle');
+            const sessionLabel = document.getElementById('session-label');
+            const repeatsToggle = document.getElementById('repeats-toggle');
+            const repeatsLabel = document.getElementById('repeats-label');
+            const autoIntervalContainer = document.getElementById('auto-interval-container');
+            const autoInterval = document.getElementById('auto-interval');
+            const intervalValue = document.getElementById('interval-value');
+            const timerContainer = document.getElementById('timer-container');
+            const timerText = document.getElementById('timer-text');
+            const timerBar = document.getElementById('timer-bar');
+            const sessionProgress = document.getElementById('session-progress');
+            const progressText = document.getElementById('progress-text');
+            const progressBar = document.getElementById('progress-bar');
+            const toggleSettings = document.getElementById('toggle-settings');
+            const settingsContent = document.getElementById('settings-content');
             
-            // European notation (with H)
+            // European notation (B and H)
             const europeanTones = ['E', 'F', 'F#', 'G', 'G#', 'A', 'B', 'H', 'C', 'C#', 'D', 'D#'];
             
-            // American notation (with B)
-            const americanTones = ['E', 'F', 'F#', 'G', 'G#', 'A', 'H', 'B', 'C', 'C#', 'D', 'D#'];
+            // American notation (Bb and B)
+            const americanTones = ['E', 'F', 'Fb', 'G', 'Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb'];
             
+            // State variables
             let isEuropean = true;
+            let isAutoMode = false;
+            let isSessionMode = false;
+            let allowRepeats = false;
             let currentTones = europeanTones;
+            let usedTones = [];
+            let sessionCount = 0;
+            let timerInterval = null;
+            let currentSeconds = 5;
+            let settingsVisible = true;
             
             // Function to get a random tone
             function getRandomTone() {
-                const randomIndex = Math.floor(Math.random() * currentTones.length);
-                return currentTones[randomIndex];
+                if (isSessionMode) {
+                    return getSessionTone();
+                }
+                
+                if (!allowRepeats) {
+                    // If we don't allow repeats, filter out the current tone
+                    let availableTones = currentTones.filter(tone => tone !== toneDisplay.textContent);
+                    if (availableTones.length === 0) {
+                        // If we've used all tones, reset
+                        availableTones = currentTones;
+                    }
+                    const randomIndex = Math.floor(Math.random() * availableTones.length);
+                    return availableTones[randomIndex];
+                } else {
+                    // If repeats are allowed, just pick any random tone
+                    const randomIndex = Math.floor(Math.random() * currentTones.length);
+                    return currentTones[randomIndex];
+                }
+            }
+            
+            // Function to get the next tone in session mode
+            function getSessionTone() {
+                if (sessionCount >= currentTones.length) {
+                    // Session complete
+                    sessionCount = 0;
+                    usedTones = [];
+                    
+                    // Show completion message
+                    alert('Practice session complete! All 12 tones practiced.');
+                }
+                
+                // Get the next tone in sequence
+                const nextTone = currentTones[sessionCount];
+                sessionCount++;
+                
+                // Update progress
+                updateSessionProgress();
+                
+                return nextTone;
             }
             
             // Update the displayed tone
             function updateTone() {
                 toneDisplay.textContent = getRandomTone();
+                
+                // Reset timer if in auto mode
+                if (isAutoMode) {
+                    resetTimer();
+                }
             }
             
             // Toggle between European and American notation
@@ -110,15 +267,124 @@
                 notationLabel.textContent = isEuropean ? 'European' : 'American';
                 currentTones = isEuropean ? europeanTones : americanTones;
                 
-                // If the current tone is B/H, update it to match the current notation
-                if (toneDisplay.textContent === 'B' || toneDisplay.textContent === 'H') {
-                    toneDisplay.textContent = isEuropean ? 'H' : 'B';
+                // Convert the current tone if it's one of the different ones
+                if (toneDisplay.textContent === 'B' && isEuropean) {
+                    toneDisplay.textContent = 'B'; // European B (American Bb)
+                } else if (toneDisplay.textContent === 'H' && !isEuropean) {
+                    toneDisplay.textContent = 'B'; // American B (European H)
+                } else if (toneDisplay.textContent === 'B' && !isEuropean) {
+                    toneDisplay.textContent = 'Bb'; // American Bb (European B)
+                } else if (toneDisplay.textContent === 'Bb' && isEuropean) {
+                    toneDisplay.textContent = 'B'; // European B (American Bb)
+                }
+                
+                // Reset session if active
+                if (isSessionMode) {
+                    sessionCount = 0;
+                    updateSessionProgress();
+                }
+            }
+            
+            // Toggle between manual and auto mode
+            function toggleMode() {
+                isAutoMode = !isAutoMode;
+                modeLabel.textContent = isAutoMode ? 'Auto' : 'Manual';
+                
+                // Show/hide auto interval settings
+                autoIntervalContainer.classList.toggle('hidden', !isAutoMode);
+                
+                // Show/hide timer
+                timerContainer.classList.toggle('hidden', !isAutoMode);
+                
+                // Enable/disable the new tone button
+                newToneBtn.disabled = isAutoMode;
+                newToneBtn.classList.toggle('opacity-50', isAutoMode);
+                newToneBtn.classList.toggle('cursor-not-allowed', isAutoMode);
+                
+                if (isAutoMode) {
+                    // Start the timer
+                    resetTimer();
+                } else {
+                    // Clear the timer
+                    clearInterval(timerInterval);
+                }
+            }
+            
+            // Toggle session mode
+            function toggleSession() {
+                isSessionMode = !isSessionMode;
+                sessionLabel.textContent = isSessionMode ? 'On' : 'Off';
+                
+                // Show/hide session progress
+                sessionProgress.classList.toggle('hidden', !isSessionMode);
+                
+                // Reset session
+                sessionCount = 0;
+                usedTones = [];
+                
+                if (isSessionMode) {
+                    updateSessionProgress();
+                    updateTone(); // Get the first tone in the session
+                }
+            }
+            
+            // Toggle allowing repeats
+            function toggleRepeats() {
+                allowRepeats = !allowRepeats;
+                repeatsLabel.textContent = allowRepeats ? 'Yes' : 'No';
+            }
+            
+            // Update session progress display
+            function updateSessionProgress() {
+                const progress = (sessionCount / currentTones.length) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${sessionCount}/${currentTones.length}`;
+            }
+            
+            // Reset and start the timer
+            function resetTimer() {
+                clearInterval(timerInterval);
+                currentSeconds = parseInt(autoInterval.value);
+                timerText.textContent = `${currentSeconds}s`;
+                timerBar.style.width = '100%';
+                
+                timerInterval = setInterval(() => {
+                    currentSeconds--;
+                    timerText.textContent = `${currentSeconds}s`;
+                    
+                    // Update timer bar
+                    const percentage = (currentSeconds / parseInt(autoInterval.value)) * 100;
+                    timerBar.style.width = `${percentage}%`;
+                    
+                    if (currentSeconds <= 0) {
+                        updateTone();
+                    }
+                }, 1000);
+            }
+            
+            // Toggle settings visibility
+            function toggleSettingsVisibility() {
+                settingsVisible = !settingsVisible;
+                settingsContent.classList.toggle('hidden', !settingsVisible);
+                toggleSettings.textContent = settingsVisible ? 'Hide' : 'Show';
+            }
+            
+            // Update interval value display
+            function updateIntervalDisplay() {
+                intervalValue.textContent = `${autoInterval.value}s`;
+                if (isAutoMode) {
+                    resetTimer();
                 }
             }
             
             // Event listeners
             newToneBtn.addEventListener('click', updateTone);
             notationToggle.addEventListener('change', toggleNotation);
+            modeToggle.addEventListener('change', toggleMode);
+            sessionToggle.addEventListener('change', toggleSession);
+            repeatsToggle.addEventListener('change', toggleRepeats);
+            autoInterval.addEventListener('input', updateIntervalDisplay);
+            toggleSettings.addEventListener('click', toggleSettingsVisibility);
             
             // Initialize with a random tone
             updateTone();
