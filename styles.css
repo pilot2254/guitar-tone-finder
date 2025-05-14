@@ -1,0 +1,8 @@
+.toggle-checkbox:checked {
+    transform: translateX(100%);
+    border-color: #000;
+}
+
+.toggle-checkbox:checked + .toggle-label {
+    background-color: #000;
+}
