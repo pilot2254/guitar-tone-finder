@@ -3,7 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guitar Tone Finder</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Guitar Tone Finder - Learn Guitar Fretboard Notes</title>
+    <meta name="title" content="Guitar Tone Finder - Learn Guitar Fretboard Notes">
+    <meta name="description" content="Interactive tool for guitar students to practice finding tones on the fretboard. Supports both European and American notation systems.">
+    <meta name="keywords" content="guitar, fretboard, music theory, guitar practice, tone finder, guitar learning, music education, guitar notes">
+    <meta name="author" content="Guitar Tone Finder">
+    <link rel="canonical" href="https://pilot2254.github.io/guitar-tone-finder/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pilot2254.github.io/guitar-tone-finder/">
+    <meta property="og:title" content="Guitar Tone Finder - Learn Guitar Fretboard Notes">
+    <meta property="og:description" content="Interactive tool for guitar students to practice finding tones on the fretboard. Supports both European and American notation systems.">
+    <meta property="og:image" content="https://pilot2254.github.io/guitar-tone-finder/guitar.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://pilot2254.github.io/guitar-tone-finder/">
+    <meta property="twitter:title" content="Guitar Tone Finder - Learn Guitar Fretboard Notes">
+    <meta property="twitter:description" content="Interactive tool for guitar students to practice finding tones on the fretboard. Supports both European and American notation systems.">
+    <meta property="twitter:image" content="https://pilot2254.github.io/guitar-tone-finder/guitar.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="guitar.png">
+    <link rel="apple-touch-icon" href="guitar.png">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,10 +51,28 @@
             }
         }
     </script>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LearningResource",
+      "name": "Guitar Tone Finder",
+      "description": "Interactive tool for guitar students to practice finding tones on the fretboard. Supports both European and American notation systems.",
+      "educationalLevel": "Beginner to Advanced",
+      "learningResourceType": "Interactive Tool",
+      "teaches": "Guitar Fretboard Knowledge",
+      "url": "https://pilot2254.github.io/guitar-tone-finder/"
+    }
+    </script>
 </head>
 <body class="bg-white text-vercel-black min-h-screen flex flex-col items-center font-sans">
     <header class="w-full max-w-4xl px-6 py-8">
@@ -154,6 +199,11 @@
 
     <footer class="w-full max-w-4xl px-6 py-8 border-t border-vercel-lightgray text-center text-sm text-vercel-gray">
         <p>Created for guitar students to improve fretboard knowledge</p>
+        <p class="mt-2">
+            <a href="#" class="hover:text-black transition-colors">Terms</a> · 
+            <a href="#" class="hover:text-black transition-colors">Privacy</a> · 
+            <a href="#" class="hover:text-black transition-colors">Contact</a>
+        </p>
     </footer>
 
     <script src="script.js"></script>
