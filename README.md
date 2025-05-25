@@ -24,7 +24,7 @@ No installation required! This is a client-side application that runs entirely i
 
 1. Clone the repository:
 ```
-git clone [https://github.com/pilot2254/guitar-tone-finder.git](https://github.com/pilot2254/guitar-tone-finder.git)
+git clone https://github.com/pilot2254/guitar-tone-finder.git
 ```
 
 2. Open `index.html` in your web browser.
